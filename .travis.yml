@@ -2,6 +2,8 @@ language:
   - node_js
 node_js:
   - "7"
+services:
+  - docker
 before_install:
   - export CHROME_BIN=/usr/bin/google-chrome
   - export DISPLAY=:99.0 
@@ -11,6 +13,8 @@ before_install:
   - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
   - sudo dpkg -i google-chrome*.deb
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9876 http://localhost &
+  - pip install --user awscli
+  - export PATH=$PATH:$HOME/.local/bin
 before_script: 
   - npm install -g @angular/cli
   - npm install 
@@ -18,4 +22,7 @@ before_script:
 script:
   - ng test --watch=false
 after_success: 
+  - eval $(aws ecr get-login --region eu-east-1)
   - docker build -t angular-sandbox .
+  - docker tag angular-sandbox:latest 152310356553.dkr.ecr.us-east-1.amazonaws.com/travis/web:latest
+  - docker push 152310356553.dkr.ecr.us-east-1.amazonaws.com/travis/web:latest
