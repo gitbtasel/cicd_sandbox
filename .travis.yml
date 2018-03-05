@@ -17,3 +17,5 @@ before_script:
   - ng build
 script:
   - ng test --watch=false
+after_success: 
+  - docker build -t angular-sandbox .
