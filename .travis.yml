@@ -22,8 +22,8 @@ script:
 after_success: 
   - pip install --user awscli
   - export PATH=$PATH:$HOME/.local/bin
-  - export AWS_ACCESS_KEY_ID=aws-key-id
-  - export AWS_SECRET_ACCESS_KEY=aws-secret-key
+  - export AWS_ACCESS_KEY_ID=awskeyid
+  - export AWS_SECRET_ACCESS_KEY=awssecretkey
   - $(aws ecr get-login --region us-east-1)
   - docker build -t angular-sandbox .
   - docker tag angular-sandbox:latest 152310356553.dkr.ecr.us-east-1.amazonaws.com/travis/web:latest
